@@ -72,3 +72,8 @@ group :development do
   gem "better_errors"
   gem "binding_of_caller"
 end
+# user authentication
+gem 'devise'
+
+# gem required for testing views in rspec 
+gem 'rails-controller-testing'

@@ -10,15 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_29_034221) do
+ActiveRecord::Schema.define(version: 2022_02_08_235614) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assignments", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "role_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["role_id"], name: "index_assignments_on_role_id"
+    t.index ["user_id"], name: "index_assignments_on_user_id"
+  end
+
+  create_table "megazines", force: :cascade do |t|
+    t.string "name"
+    t.bigint "oenologist_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["oenologist_id"], name: "index_megazines_on_oenologist_id"
+  end
+
+  create_table "oenologist_magazines", force: :cascade do |t|
+    t.bigint "oenologist_id"
+    t.bigint "magazine_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["magazine_id"], name: "index_oenologist_magazines_on_magazine_id"
+    t.index ["oenologist_id"], name: "index_oenologist_magazines_on_oenologist_id"
+  end
 
   create_table "oenologists", force: :cascade do |t|
     t.integer "age"
     t.string "name"
     t.string "nationality"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -69,6 +101,10 @@ ActiveRecord::Schema.define(version: 2021_12_29_034221) do
     t.index ["wine_id"], name: "index_wines_oenologists_on_wine_id"
   end
 
+  add_foreign_key "assignments", "roles"
+  add_foreign_key "assignments", "users"
+  add_foreign_key "megazines", "oenologists"
+  add_foreign_key "oenologist_magazines", "oenologists"
   add_foreign_key "wine_strains", "strains"
   add_foreign_key "wine_strains", "wines"
   add_foreign_key "wines_oenologists", "oenologists"

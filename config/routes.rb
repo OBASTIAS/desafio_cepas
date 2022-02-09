@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :oenologist_magazines
+  resources :megazines
+  resources :assignments
+  resources :roles
   devise_for :users
   get 'home/index'
   resources :wines_oenologists
@@ -8,6 +12,6 @@ Rails.application.routes.draw do
   resources :wines
 
 
-  root to: "home#index"
+  root to: "wines#index"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

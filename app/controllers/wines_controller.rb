@@ -1,4 +1,6 @@
 class WinesController < ApplicationController
+  before_action :authenticate_user!
+
   before_action :set_wine, only: %i[ show edit update destroy ]
 
   # GET /wines or /wines.json
@@ -13,6 +15,8 @@ class WinesController < ApplicationController
   # GET /wines/new
   def new
     @wine = Wine.new
+    @wine.wine_strains.build
+
   end
 
   # GET /wines/1/edit
@@ -21,7 +25,6 @@ class WinesController < ApplicationController
 
   # POST /wines or /wines.json
   def create
-    byebug
     @wine = Wine.new(wine_params)
 
     respond_to do |format|
@@ -66,6 +69,6 @@ class WinesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def wine_params
-      params.require(:wine).permit(:name, wine_strains_attributes: [:id, :strain_id,:percentage, :_destroy])
+      params.require(:wine).permit(:name, {enologist_ids: []},wine_strains_attributes: [:id, :strain_id,:percentage, :_destroy])
     end
 end
